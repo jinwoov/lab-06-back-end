@@ -24,10 +24,23 @@ app.get('/location', (request, response) => {
     errorHandler('So sorry, something went wrong.', request, response);
   }
 })
-/////create pathway for json file 
-////  create request for query city;
-//// response.send
 
+app.get('/weather', (request, response) => {
+  try {
+    const dailyWeatherAll = [];
+    const darksky = require('./data/darksky.json');
+    let data = darksky.daily.data;
+    data.forEach(value => {
+      dailyWeatherAll.push(new Weather(value))
+    });
+    // const weathers = request.query.search_query;
+    response.send(dailyWeatherAll)
+
+  }
+  catch (error) {
+    errorHandler('So sorry, something went wrong.', response);
+  }
+});
 
 
 
@@ -42,6 +55,21 @@ function Location(apple, banana) {
   this.longitude = banana[0].lon;
 }
 
+function Weather(day) { 
+  this.forecast = day.summary;
+  this.time = new Date(day.time).toString().slice(0, 15);
+}
+
+
+
+
+function notFoundHandler(request, response) {
+  response.status(404).send('huh?');
+}
+
+function errorHandler(error, request, response) {
+  response.status(500).send(error);
+}
 
 
 
