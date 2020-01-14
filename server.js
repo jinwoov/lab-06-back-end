@@ -9,10 +9,8 @@ const PORT = process.env.PORT || 3001;
 const cors = require('cors')
 app.use(cors());
 
-///// use the env port to our server
-///// utilize express//////
 
-//// create app get with path way of /location//////
+/////// create app get//////
 app.get('/location', (request, response) => {
   try {
     const geoFile = require('./data/geo.json')
@@ -38,16 +36,11 @@ app.get('/weather', (request, response) => {
 
   }
   catch (error) {
-    errorHandler('So sorry, something went wrong.', response);
+    errorHandler('So sorry, something is acting up.', request, response);
   }
 });
 
-
-
-///////create error handler
-
-
-////create a constructor
+////Constructor
 function Location(apple, banana) {
   this.search_query = apple;
   this.formatted_query = banana[0].display_name;
@@ -60,11 +53,12 @@ function Weather(day) {
   this.time = new Date(day.time).toString().slice(0, 15);
 }
 
-
-
+/////////// Error functions///////////
+app.use('*', notFoundHandler);
+app.use(errorHandler);
 
 function notFoundHandler(request, response) {
-  response.status(404).send('huh?');
+  response.status(404).send('this route is does not compute?!?');
 }
 
 function errorHandler(error, request, response) {
@@ -73,6 +67,6 @@ function errorHandler(error, request, response) {
 
 
 
-/////// create app listenr
+/////// app listener//////////
 
 app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
