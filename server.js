@@ -22,6 +22,7 @@ app.get('/location', (request, response) => {
         .then(result => {
           const locationSearch = new Location(city, result.body);
           location = locationSearch;
+          console.log(location)
           response.send(location);
         })
   }
@@ -44,8 +45,7 @@ app.get('/weather', (request, response) => {
         let dailyWeatherAll2 = data.map(value => {
           return new Weather(value);
         });
-        response.send(dailyWeatherAll2);
-        response.status(200).json(dailyWeatherAll2)
+        response.status(200).send(dailyWeatherAll2)
       })
   }
   catch (error) {
@@ -65,8 +65,7 @@ app.get('/events', (request, response) => {
         let eventListing = eventList.map(value => {
           return new Event(value);
         });
-        response.send(eventListing);
-        response.status(200).json(eventListing)
+        response.status(200).send(eventListing)
       })
   } catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
