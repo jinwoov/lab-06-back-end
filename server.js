@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 3001;
+const superagent = require('superagent');
+const geocod = process.env.GEOCODE_API_KEY;
 
 const cors = require('cors');
 app.use(cors());
@@ -12,13 +14,17 @@ app.use(cors());
 
 /////// create app get//////
 app.get('/location', (request, response) => {
+ 
+  
+  
   try {
-
-    
-    const geoFile = require('./data/geo.json');
     const city = request.query.city;
-    const locationSearch = new Location(city, geoFile);
-    response.send(locationSearch);
+    let url = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
+    superagent.get(url)
+      .then(result => {
+        const locationSearch = new Location(city, result.body);
+        response.send(locationSearch);
+      })
   }
   catch (error) {
     errorHandler('So sorry, something went wrong.', request, response);
@@ -57,7 +63,7 @@ function Weather(day) {
 
 /////////// Error functions///////////
 app.use('*', notFoundHandler);
-// app.use(errorHandler);
+app.use(errorHandler);
 
 function notFoundHandler(request, response) {
   response.status(404).send('this route does not compute?!?');
