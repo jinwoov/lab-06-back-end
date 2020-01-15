@@ -56,18 +56,23 @@ app.get('/weather', (request, response) => {
 
 
 app.get('/events', (request, response) => {
-  const eventAPI = process.env.EVENTFUL_API_KEY;
-  let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${location.search_query}&app_key=${eventAPI}`;
-  superagent.get(urlEvent)
-    .then(result => {
-      let parsedData = JSON.parse(result.text);
-      let eventList = parsedData.events.event
-      let eventListing = eventList.map(value => {
-        return new Event(value);
-      });
-      response.send(eventListing);
-      response.status(200).json(eventListing)
-    })
+  try {
+    const eventAPI = process.env.EVENTFUL_API_KEY;
+    let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${location.search_query}&app_key=${eventAPI}`;
+    superagent.get(urlEvent)
+      .then(result => {
+        let parsedData = JSON.parse(result.text);
+        let eventList = parsedData.events.event
+        let eventListing = eventList.map(value => {
+          return new Event(value);
+        });
+        response.send(eventListing);
+        response.status(200).json(eventListing)
+      })
+  } catch (error) {
+    errorHandler('So sorry, something is acting up.', request, response);
+  }
+
 })
 
 //////////Constructors////////
