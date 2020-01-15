@@ -25,7 +25,7 @@ app.get('/location', (request, response) => {
         .then(result => {
           const locationSearch = new Location(city, result.body);
           location = locationSearch;
-          console.log('iwent here')
+          console.log(location.latitude)
           response.send(location);
         })
   }
@@ -36,15 +36,19 @@ app.get('/location', (request, response) => {
 
 app.get('/weather', (request, response) => {
   try {
-    const darksky = require('./data/darksky.json');
-    let data = darksky.daily.data;
-    ////// with map//////
-    let dailyWeatherAll2 = data.map(value => {
-      return new Weather(value);
-    });
-    // const weathers = request.query.search_query;
-    response.send(dailyWeatherAll2);
-    response.status(200).json(dailyWeatherAll2)
+    const weatherAPI = process.env.WEATHER_API_KEY;
+    let urlLocation = `https://api.darksky.net/forecast/${weatherAPI}/${location.latitude},${location.longitude}`;
+    // console.log(urlLocation)
+    superagent.get(urlLocation)
+      .then(result => {
+        let data = result.body.daily.data;
+        ////// with map//////
+        let dailyWeatherAll2 = data.map(value => {
+          return new Weather(value);
+        });
+        response.send(dailyWeatherAll2);
+        response.status(200).json(dailyWeatherAll2)
+      })
   }
   catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
