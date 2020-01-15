@@ -12,11 +12,8 @@ const cors = require('cors');
 app.use(cors());
 
 
-/////// create app get//////
+////////////// create app get///////////
 app.get('/location', (request, response) => {
- 
-  
-  
   try {
     const city = request.query.city;
     let urlLocation = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
@@ -36,8 +33,10 @@ app.get('/location', (request, response) => {
 app.get('/weather', (request, response) => {
   try {
     const weatherAPI = process.env.WEATHER_API_KEY;
-    let urlLocation = `https://api.darksky.net/forecast/${weatherAPI}/${location.latitude},${location.longitude}`;
+    let {latitude, longitude} = request.query;
+    let urlLocation = `https://api.darksky.net/forecast/${weatherAPI}/${latitude},${longitude}`;
     // console.log(urlLocation)
+   
     superagent.get(urlLocation)
       .then(result => {
         let data = result.body.daily.data;
@@ -54,11 +53,11 @@ app.get('/weather', (request, response) => {
   }
 });
 
-
 app.get('/events', (request, response) => {
   try {
     const eventAPI = process.env.EVENTFUL_API_KEY;
-    let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${location.search_query}&app_key=${eventAPI}`;
+    let {search_query} = request.query;
+    let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${search_query}&app_key=${eventAPI}`;
     superagent.get(urlEvent)
       .then(result => {
         let parsedData = JSON.parse(result.text);
