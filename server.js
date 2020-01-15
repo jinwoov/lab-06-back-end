@@ -7,7 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const superagent = require('superagent');
 const geocod = process.env.GEOCODE_API_KEY;
-
+let location =[];
 const cors = require('cors');
 app.use(cors());
 
@@ -19,12 +19,15 @@ app.get('/location', (request, response) => {
   
   try {
     const city = request.query.city;
-    let url = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
-    superagent.get(url)
-      .then(result => {
-        const locationSearch = new Location(city, result.body);
-        response.send(locationSearch);
-      })
+    let urlLocation = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
+    location.search_query === city ? response.send(location)
+      :superagent.get(urlLocation)
+        .then(result => {
+          const locationSearch = new Location(city, result.body);
+          location = locationSearch;
+          console.log(location.latitude)
+          response.send(location);
+        })
   }
   catch (error) {
     errorHandler('So sorry, something went wrong.', request, response);
@@ -33,15 +36,19 @@ app.get('/location', (request, response) => {
 
 app.get('/weather', (request, response) => {
   try {
-    const darksky = require('./data/darksky.json');
-    let data = darksky.daily.data;
-    ////// with map//////
-    let dailyWeatherAll2 = data.map(value => {
-      return new Weather(value);
-    });
-    // const weathers = request.query.search_query;
-    response.send(dailyWeatherAll2);
-    response.status(200).json(dailyWeatherAll2)
+    const weatherAPI = process.env.WEATHER_API_KEY;
+    let urlLocation = `https://api.darksky.net/forecast/${weatherAPI}/${location.latitude},${location.longitude}`;
+    // console.log(urlLocation)
+    superagent.get(urlLocation)
+      .then(result => {
+        let data = result.body.daily.data;
+        ////// with map//////
+        let dailyWeatherAll2 = data.map(value => {
+          return new Weather(value);
+        });
+        response.send(dailyWeatherAll2);
+        response.status(200).json(dailyWeatherAll2)
+      })
   }
   catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
