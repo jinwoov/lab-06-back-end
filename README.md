@@ -1,6 +1,6 @@
 # Project Name
 
-**Author**: Jin kim
+**Author**: Jin kim  
 **Version**: 1.0.1  
 
 ## Overview  
