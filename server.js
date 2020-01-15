@@ -7,7 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const superagent = require('superagent');
 const geocod = process.env.GEOCODE_API_KEY;
-
+let location =[];
 const cors = require('cors');
 app.use(cors());
 
@@ -19,12 +19,15 @@ app.get('/location', (request, response) => {
   
   try {
     const city = request.query.city;
-    let url = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
-    superagent.get(url)
-      .then(result => {
-        const locationSearch = new Location(city, result.body);
-        response.send(locationSearch);
-      })
+    let urlLocation = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
+    location.search_query === city ? response.send(location)
+      :superagent.get(urlLocation)
+        .then(result => {
+          const locationSearch = new Location(city, result.body);
+          location = locationSearch;
+          console.log('iwent here')
+          response.send(location);
+        })
   }
   catch (error) {
     errorHandler('So sorry, something went wrong.', request, response);
