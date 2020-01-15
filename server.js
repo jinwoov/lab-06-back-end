@@ -25,7 +25,6 @@ app.get('/location', (request, response) => {
         .then(result => {
           const locationSearch = new Location(city, result.body);
           location = locationSearch;
-          console.log(location.latitude)
           response.send(location);
         })
   }
@@ -55,6 +54,22 @@ app.get('/weather', (request, response) => {
   }
 });
 
+
+app.get('/events', (request, response) => {
+  const eventAPI = process.env.EVENTFUL_API_KEY;
+  let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${location.search_query}&app_key=${eventAPI}`;
+  superagent.get(urlEvent)
+    .then(result => {
+      let parsedData = JSON.parse(result.text);
+      let eventList = parsedData.events.event
+      let eventListing = eventList.map(value => {
+        return new Event(value);
+      });
+      response.send(eventListing);
+      response.status(200).json(eventListing)
+    })
+})
+
 //////////Constructors////////
 function Location(apple, banana) {
   this.search_query = apple;
@@ -66,6 +81,13 @@ function Location(apple, banana) {
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time *1000).toDateString()
+}
+
+function Event(obj){
+  this.link = obj.url;
+  this.name = obj.title;
+  this.event_date = obj.start_time.slice(0,11)
+  this.summary = obj.description
 }
 
 /////////// Error functions///////////
