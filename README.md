@@ -17,4 +17,5 @@ Heroku, Vs Code, I-term2
 Updated backend of location and weather to the script.  
   
 ## Credits and Collaborations  
-Allson Reyes  
+Allson Reyes    
+Gina Pultorak  
