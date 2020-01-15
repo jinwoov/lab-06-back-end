@@ -40,7 +40,7 @@ app.get('/weather', (request, response) => {
   }
 });
 
-////Constructor
+//////////Constructors////////
 function Location(apple, banana) {
   this.search_query = apple;
   this.formatted_query = banana[0].display_name;
@@ -50,7 +50,7 @@ function Location(apple, banana) {
 
 function Weather(day) { 
   this.forecast = day.summary;
-  this.time = new Date(day.time).toString().slice(0, 15);
+  this.time = new Date(day.time *1000).toString().slice(0, 15);
 }
 
 /////////// Error functions///////////
