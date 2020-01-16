@@ -7,7 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const superagent = require('superagent');
 const geocod = process.env.GEOCODE_API_KEY;
-let location =[];
+let location ={};
 const cors = require('cors');
 app.use(cors());
 
