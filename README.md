@@ -7,7 +7,7 @@
 This is the back end application of city explorer app. Adding weather and location on the map.  
 
 ## Getting Started  
-Go to https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/ and 
+Go to https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/ and  
 enter https://lab06backendjin.herokuapp.com 
 
 ## Architecture  
@@ -70,5 +70,5 @@ Actual time needed to complete: 1hr
 ## Credits and Collaborations  
 Allson Reyes    
 Gina Pultorak  
-Blandine Dasilveira
+Blandine Dasilveira   
 Eugene Monnier
