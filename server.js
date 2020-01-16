@@ -6,9 +6,11 @@ const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const superagent = require('superagent');
+
 const pg = require('pg');
 const client = new pg.Client(process.env.DATABASE_URL)
 client.on('error', err => console.error(err))
+
 let location ={};
 const cors = require('cors');
 app.use(cors());
