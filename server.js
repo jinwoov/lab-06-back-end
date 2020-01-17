@@ -77,7 +77,7 @@ function weatherHandler(request, response) {
   catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
   }
-};
+}
 
 
 
@@ -102,7 +102,7 @@ function eventHandler(request, response) {
   } catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
   }
-};
+}
 
 
 //////////Constructors////////
@@ -145,8 +145,6 @@ client.connect()
     app.listen(PORT, () => console.log(`App is listening on ${PORT}`))
   )
   .catch(err => {
-    console.error(err)
+    throw `this is website error ${err.message}`
   })
 
-
-// app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
