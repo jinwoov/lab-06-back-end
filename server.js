@@ -13,11 +13,13 @@ client.on('error', err => console.error(err))
 let location = {};
 const cors = require('cors');
 app.use(cors());
+const yelp = require('yelp-fusion');
 
 
 //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
 app.get('/movies', movieHandler)
 app.get('/location', locationHandler)
+app.get('/yelp', yelpHandler)
 function locationHandler(request, response) {
   try {
     const geocod = process.env.GEOCODE_API_KEY;
@@ -121,6 +123,45 @@ function movieHandler(request, response) {
     errorHandler('So sorry, something is acting up.', request, response);
   }
 }
+
+function yelpHandler(request, response) {
+  // console.log(location.latitude)
+  let {latitude,longitude } = request.query;
+  // console.log(request.query)
+  // console.log('iam in yelp')
+  const yelpKey = process.env.YELP_API_KEY;
+  // var myHeaders = new Headers();
+  // myHeaders.append('Authorization', 'Bearer', yelpKey);
+ 
+
+  let myUrl = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}longitude=${longitude}`;
+  superagent.get(myUrl)
+    return request
+    .set('Authorization', `Bearer ${yelpKey}`)
+    .then(result => {
+      console.log(result)
+    })
+  }
+  //   url: myUrl,
+    
+  //   method: 'GET',
+  //   dataType: 'json',
+  //   success: function(data){
+  //     console.log('success: '+data);
+  //   }
+  // });  
+  // superagent.get(urlMoive)
+  //   .then(result => {
+  //     let movieResult = result.body.results;
+  //     let movieList = movieResult.map(value => {
+  //       return new MovieDB(value)
+  //     })
+  //     response.status(200).send(movieList)
+  //   }).catch(error => console.error('this is error from weather', error))
+  // } catch (error) {
+  //   errorHandler('So sorry, something is acting up.', request, response);
+  // }
+// }
 
 
 //////////Constructors////////

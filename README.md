@@ -65,10 +65,19 @@ Actual time needed to complete: 30 min
 Estimate of time needed to complete: 1hr  
 Start time: 12:30 pm  
 Finish time: 1:30 pm  
+Actual time needed to complete: 1hr   
+
+
+### Number and name of feature: Lab 9 feature 1 MovieDB  
+Estimate of time needed to complete: 1hr  
+Start time: 10:00 pm  
+Finish time: 11:00 pm  
 Actual time needed to complete: 1hr    
   
 ## Credits and Collaborations  
 Allson Reyes    
 Gina Pultorak  
 Blandine Dasilveira   
-Eugene Monnier
+Eugene Monnier https://github.com/eugenemonnier/city-explorer  
+Cindy  
+Andrew Kyllo https://github.com/kyllo34/lab-06-back-end
