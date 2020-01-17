@@ -16,9 +16,9 @@ app.use(cors());
 
 
 //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-
+app.get('/movies', movieHandler)
 app.get('/location', locationHandler)
-function locationHandler(request, response){
+function locationHandler(request, response) {
   try {
     const geocod = process.env.GEOCODE_API_KEY;
     const city = request.query.city;
@@ -104,6 +104,24 @@ function eventHandler(request, response) {
   }
 }
 
+function movieHandler(request, response) {
+  try {
+    let { search_query } = request.query;
+    const event = process.env.MOVIE_API_KEY;
+    let urlMoive = `https://api.themoviedb.org/3/search/movie?language=en-US&api_key=${event}&query=${search_query}`;
+    superagent.get(urlMoive)
+      .then(result => {
+        let movieResult = result.body.results;
+        let movieList = movieResult.map(value => {
+          return new MovieDB(value)
+        })
+        response.status(200).send(movieList)
+      }).catch(error => console.error('this is error from weather', error))
+  } catch (error) {
+    errorHandler('So sorry, something is acting up.', request, response);
+  }
+}
+
 
 //////////Constructors////////
 function Location(apple, banana) {
@@ -123,6 +141,16 @@ function Event(obj) {
   this.name = obj.title;
   this.event_date = obj.start_time.slice(0, 11)
   this.summary = obj.description
+}
+
+function MovieDB(movie) {
+  this.title = movie.title;
+  this.overview = movie.overview;
+  this.average_votes = movie.vote_average;
+  this.total_votes = movie.vote_count;
+  this.image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  this.popularity = movie.popularity;
+  this.released_on = movie.release_date;
 }
 
 /////////// Error functions///////////
