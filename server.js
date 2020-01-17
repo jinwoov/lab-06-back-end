@@ -14,51 +14,49 @@ const cors = require('cors');
 app.use(cors());
 
 
-//////////// super ageneet
+//////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
 
-
-const locationHandler = (request, response) => {
+app.get('/location', locationHandler)
+function locationHandler(request, response){
   try {
     const geocod = process.env.GEOCODE_API_KEY;
     const city = request.query.city;
-    var selectsql = `Select * FROM locationSearch;`;
-    client.query(selectsql)
+    var selectsql = `Select * FROM locationSearch WHERE search_query=$1;`;
+    const safeValues = [city]
+    client.query(selectsql, safeValues)
       .then(result => {
-        let search = result.rows;
-        search.forEach(value => {
-          // console.log(value)
-          if (value.search_query === city) {
-            response.status(200).json(value[0]);
-          } else {
-            let urlLocation = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
-            location.search_query === city ? response.send(location)
-              : superagent.get(urlLocation)
-                .then(result => {
-                  const locationSearch = new Location(city, result.body);
-                  location = locationSearch;
-                  let sql = `INSERT INTO locationSearch (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) RETURNING *;`;
-                  let values = [city, location.formatted_query, location.latitude, location.longitude]
-                  client.query(sql, values)
-                    .then(results => {
-                      // console.log(results.rows)
-                      response.status(200).json(location);
-                      // response.send(location);
-                    })
-                    .catch(error => console.error("location handle is not working", error))
-                })
-          }
-        }).catch(error => console.error(error))
-      })
+        if (result.rows.length > 0) {
+          console.log('hit this database')
+          response.status(200).json(result.rows[0]);
+        } else {
+          let urlLocation = `https://us1.locationiq.com/v1/search.php?key=${geocod}&q=${city}&format=json`
+          location.search_query === city ? response.send(location)
+            : superagent.get(urlLocation)
+              .then(result => {
+                const locationSearch = new Location(city, result.body);
+                location = locationSearch;
+                let sql = `INSERT INTO locationSearch (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4) RETURNING *;`;
+                let values = [city, location.formatted_query, location.latitude, location.longitude]
+                client.query(sql, values)
+                  .then(results => {
+                    response.status(200).json(location);
+                    // response.send(location);
+                  })
+                  .catch(error => console.error('location handle is not working', error))
+              })
+        }
+      }).catch(error => console.error(error))
   }
+
   catch (error) {
     errorHandler('So sorry, something went wrong.', request, response);
   }
-};
-app.get('/location', locationHandler)
+}
 
 
 
-const weatherHandler = (request, response) => {
+app.get('/weather', weatherHandler)
+function weatherHandler(request, response) {
   try {
     const weatherAPI = process.env.WEATHER_API_KEY;
     let { latitude, longitude } = request.query;
@@ -79,13 +77,13 @@ const weatherHandler = (request, response) => {
     errorHandler('So sorry, something is acting up.', request, response);
   }
 };
-app.get('/weather', weatherHandler)
 
 
 
-const eventHandler = (request, response) => {
+app.get('/events', eventHandler)
+function eventHandler(request, response) {
   try {
-    let {search_query} = request.query
+    let { search_query } = request.query
     const eventAPI = process.env.EVENTFUL_API_KEY;
     // console.log('search_query', location.search_query)
     let urlEvent = `http://api.eventful.com/json/events/search?keywords=music&location=${search_query}&app_key=${eventAPI}`;
@@ -104,7 +102,7 @@ const eventHandler = (request, response) => {
     errorHandler('So sorry, something is acting up.', request, response);
   }
 };
-app.get('/events', eventHandler)
+
 
 //////////Constructors////////
 function Location(apple, banana) {
