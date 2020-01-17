@@ -10,12 +10,7 @@ const superagent = require('superagent');
 const pg = require('pg');
 const client = new pg.Client(process.env.DATABASE_URL)
 client.on('error', err => console.error(err))
-<<<<<<< HEAD
 let location = {};
-=======
-
-let location ={};
->>>>>>> 1eed9c71a82444303df5a113c169f15308c718b9
 const cors = require('cors');
 app.use(cors());
 
@@ -82,7 +77,7 @@ function weatherHandler(request, response) {
   catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
   }
-};
+}
 
 
 
@@ -107,7 +102,7 @@ function eventHandler(request, response) {
   } catch (error) {
     errorHandler('So sorry, something is acting up.', request, response);
   }
-};
+}
 
 
 //////////Constructors////////
@@ -150,8 +145,6 @@ client.connect()
     app.listen(PORT, () => console.log(`App is listening on ${PORT}`))
   )
   .catch(err => {
-    console.error(err)
+    throw `this is website error ${err.message}`
   })
 
-
-// app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
