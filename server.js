@@ -19,6 +19,7 @@ app.use(cors());
 app.get('/movies', movieHandler)
 app.get('/location', locationHandler)
 app.get('/yelp', yelpHandler)
+app.get('/trails', trailHandler)
 function locationHandler(request, response) {
   try {
     const geocod = process.env.GEOCODE_API_KEY;
@@ -143,6 +144,26 @@ function yelpHandler(request, response) {
   }
 }
 
+function trailHandler(request, response) {
+  try {
+    let {longitude,latitude} = request.query;
+    const hikeKey = process.env.TRAIL_API_KEY;
+    // console.log(yelpKey)
+    let myUrl = `https://www.hikingproject.com/data/get-trails?lat=${latitude}&lon=${longitude}&maxDistance=10&key=${hikeKey}`;
+    superagent.get(myUrl)
+      .then(result => {
+        let parsedData = JSON.parse(result.text)
+        let trailList = parsedData.trails.map(value => {
+          return new trailAPI(value)
+        })
+        // console.log(trailList)
+        response.status(200).send(trailList)
+      }).catch(error => console.error('this is error from weather', error))
+  } catch (error) {
+    errorHandler('So sorry, something is acting up.', request, response);
+  }
+}
+
 
 //////////Constructors////////
 function Location(apple, banana) {
@@ -180,6 +201,19 @@ function yelpAPI(restaurant) {
   this.price = restaurant.price;
   this.rating = restaurant.rating;
   this.url = restaurant.url;
+}
+
+function trailAPI(trail) {
+  this.name = trail.name;
+  this.location = trail.location;
+  this.length = trail.length;
+  this.stars = trail.stars;
+  this.star_votes = trail.starVotes;
+  this.summary = trail.summary;
+  this.trail_url = trail.url;
+  this.conditions = trail.conditionDetails;
+  this.condition_date = trail.conditionDate.slice(0,10);
+  this.condition_time = trail.conditionDate.slice(12,19);
 }
 
 /////////// Error functions///////////
