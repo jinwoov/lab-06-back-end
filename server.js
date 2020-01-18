@@ -13,7 +13,6 @@ client.on('error', err => console.error(err))
 let location = {};
 const cors = require('cors');
 app.use(cors());
-const yelp = require('yelp-fusion');
 
 
 //////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
@@ -125,43 +124,24 @@ function movieHandler(request, response) {
 }
 
 function yelpHandler(request, response) {
-  // console.log(location.latitude)
-  let {latitude,longitude } = request.query;
-  // console.log(request.query)
-  // console.log('iam in yelp')
-  const yelpKey = process.env.YELP_API_KEY;
-  // var myHeaders = new Headers();
-  // myHeaders.append('Authorization', 'Bearer', yelpKey);
- 
-
-  let myUrl = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}longitude=${longitude}`;
-  superagent.get(myUrl)
-    return request
-    .set('Authorization', `Bearer ${yelpKey}`)
-    .then(result => {
-      console.log(result)
-    })
+  try {
+    let {search_query} = request.query;
+    const yelpKey = process.env.YELP_API_KEY;
+    // console.log(yelpKey)
+    let myUrl = `https://api.yelp.com/v3/businesses/search?restaurant&location=${search_query}}`;
+    superagent.get(myUrl)
+      .set('Authorization', `Bearer ${yelpKey}`)
+      .then(result => {
+        let parsedData = JSON.parse(result.text)
+        let yelpList = parsedData.businesses.map(value => {
+          return new yelpAPI(value)
+        })
+        response.status(200).send(yelpList)
+      }).catch(error => console.error('this is error from weather', error))
+  } catch (error) {
+    errorHandler('So sorry, something is acting up.', request, response);
   }
-  //   url: myUrl,
-    
-  //   method: 'GET',
-  //   dataType: 'json',
-  //   success: function(data){
-  //     console.log('success: '+data);
-  //   }
-  // });  
-  // superagent.get(urlMoive)
-  //   .then(result => {
-  //     let movieResult = result.body.results;
-  //     let movieList = movieResult.map(value => {
-  //       return new MovieDB(value)
-  //     })
-  //     response.status(200).send(movieList)
-  //   }).catch(error => console.error('this is error from weather', error))
-  // } catch (error) {
-  //   errorHandler('So sorry, something is acting up.', request, response);
-  // }
-// }
+}
 
 
 //////////Constructors////////
@@ -192,6 +172,14 @@ function MovieDB(movie) {
   this.image_url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   this.popularity = movie.popularity;
   this.released_on = movie.release_date;
+}
+
+function yelpAPI(restaurant) {
+  this.name = restaurant.name;
+  this.image_url = restaurant.image_url;
+  this.price = restaurant.price;
+  this.rating = restaurant.rating;
+  this.url = restaurant.url;
 }
 
 /////////// Error functions///////////
