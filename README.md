@@ -1,4 +1,4 @@
-# Project Name
+# City Explorer  
 
 **Author**: Jin kim  
 **Version**: 1.0.2  
