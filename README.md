@@ -1,7 +1,8 @@
 # City Explorer  
 
+
 **Author**: Jin kim  
-**Version**: 1.0.2  
+**Version**: 1.0.3   
 
 ## Overview  
 This is the back end application of city explorer app. Adding weather and location on the map.  
@@ -14,10 +15,12 @@ enter https://lab06backendjin.herokuapp.com
 To create this used:  
 Heroku, Vs Code, I-term2  
   
-## Change Log   
-Updated backend of location and weather to the script.  
-
-## Time alotment  
+## Change Logs   
+1. Updated backend of location and weather to the script.
+2. Added all other routes in the server.js
+3. Refactor/Modularize the code
+ 
+## Time alottments
 ### Number and name of feature: Lab 6 feature 1 Repo set-up  
 Estimate of time needed to complete: 20min  
 Start time: 11:10 am  
@@ -67,17 +70,54 @@ Start time: 12:30 pm
 Finish time: 1:30 pm  
 Actual time needed to complete: 1hr   
 
+### Number and name of feature: Lab 8 feature 1 Database  
+Estimate of time needed to complete: 1hr  
+Start time: 9:30 am  
+Finish time: 10:30 am  
+Actual time needed to complete: 2days
+
+### Number and name of feature: Lab 8 feature 2 Server  
+Estimate of time needed to complete: 1hr  
+Start time: 10:30 am  next day
+Finish time: 11:30 am  
+Actual time needed to complete: 1hour and a day
+
+### Number and name of feature: Lab 8 feature 3 Deploy  
+Estimate of time needed to complete: 10min  
+Start time: 11:30 am  next day
+Finish time: 11:40 am  
+Actual time needed to complete: 10min
 
 ### Number and name of feature: Lab 9 feature 1 MovieDB  
 Estimate of time needed to complete: 1hr  
-Start time: 10:00 pm  
-Finish time: 11:00 pm  
+Start time: 10:00 am  
+Finish time: 11:00 am  
+Actual time needed to complete: 1hr   
+
+### Number and name of feature: Lab 9 feature 2 Yelp  
+Estimate of time needed to complete: 1hr  
+Start time: 11:00 am  
+Finish time: 12:00 am  
 Actual time needed to complete: 1hr    
+
+### Number and name of feature: Lab 9 feature 3 Refactor  
+Estimate of time needed to complete: 1hr  
+Start time: 12:30 pm  
+Finish time: 1:30 pm  
+Actual time needed to complete: 1hr    
+
+### Number and name of feature: Lab 10 
+Estimate of time needed to complete: 2hr  
+Start time: 10:00 pm  
+Finish time: 12:00 pm  
+Actual time needed to complete: 2hr    
   
 ## Credits and Collaborations  
-Allson Reyes    
+Allyson Reyes
+https://github.com/areyes986/lab-06-back-end    
 Gina Pultorak  
-Blandine Dasilveira   
-Eugene Monnier https://github.com/eugenemonnier/city-explorer  
-Cindy  
+Blandine Dasilveira https://github.com/Blandine12/lab-09    
+Eugene Monnier https://github.com/eugenemonnier/city-explorer    
+Cindy Weiss https://github.com/cindyweiss/lab-06-back-end2  
 Andrew Kyllo https://github.com/kyllo34/lab-06-back-end
+
