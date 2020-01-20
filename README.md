@@ -1,4 +1,5 @@
-# City-explorer  
+# City Explorer  
+
 
 **Author**: Jin kim  
 **Version**: 1.0.3   
@@ -119,3 +120,4 @@ Blandine Dasilveira https://github.com/Blandine12/lab-09
 Eugene Monnier https://github.com/eugenemonnier/city-explorer    
 Cindy Weiss https://github.com/cindyweiss/lab-06-back-end2  
 Andrew Kyllo https://github.com/kyllo34/lab-06-back-end
+
